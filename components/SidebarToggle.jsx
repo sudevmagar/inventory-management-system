@@ -1,10 +1,12 @@
-// components/SidebarToggle.jsx
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Home, Package, Tag, Menu } from "lucide-react";
 
 export default function SidebarToggle() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
@@ -18,27 +20,45 @@ export default function SidebarToggle() {
           <div className="text-2xl font-bold text-blue-600">IMS</div>
 
           <div className="flex flex-col justify-start items-start text-gray-600">
-            <div className="w-full flex items-center mb-8 cursor-pointer text-blue-600">
+            <Link
+              href="/dashboard"
+              className={`w-full flex items-center mb-8 cursor-pointer hover:text-blue-600 ${
+                pathname === "/dashboard" ? "text-blue-600" : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
               <Home className="w-5 h-5 mr-5" />
               <p className="font-medium">Dashboard</p>
-            </div>
-            <div className="w-full flex items-center mb-8 cursor-pointer hover:text-blue-600">
+            </Link>
+            <Link
+              href="/dashboard/inventory"
+              className={`w-full flex items-center mb-8 cursor-pointer hover:text-blue-600 ${
+                pathname === "/dashboard/inventory" ? "text-blue-600" : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
               <Package className="w-5 h-5 mr-5" />
-              <p className="font-medium"> BCS Inventory</p>
-            </div>
-            <div className="w-full flex items-center mb-8 cursor-pointer hover:text-blue-600">
+              <p className="font-medium">Inventory</p>
+            </Link>
+            <Link
+              href="/dashboard/categories"
+              className={`w-full flex items-center mb-8 cursor-pointer hover:text-blue-600 ${
+                pathname === "/dashboard/categories" ? "text-blue-600" : ""
+              }`}
+              onClick={() => setSidebarOpen(false)}
+            >
               <Tag className="w-5 h-5 mr-5" />
               <p className="font-medium">Categories</p>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Sidebar Backdrop with RGBA */}
+      {/* Sidebar Backdrop */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-10 lg:hidden"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }} // 15% opacity black
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}
           onClick={() => setSidebarOpen(false)}
         />
       )}
