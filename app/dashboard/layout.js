@@ -1,6 +1,6 @@
 import Link from "next/link";
-import SidebarToggle from "../../components/SidebarToggle";
-import DesktopSidebar from "../../components/DesktopSidebar";
+import SidebarToggle from "@/components/Dashboard/SidebarToggle";
+import DesktopSidebar from "@/components/Dashboard/DesktopSidebar";
 import { Search } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
