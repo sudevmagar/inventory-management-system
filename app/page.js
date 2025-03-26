@@ -1,11 +1,13 @@
 import Navbar from "../components/LandingPage/Navbar";
 import HeroSection from "../components/LandingPage/HeroSection";
+import FeaturesSection from "../components/LandingPage/FeaturesSection";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-100 relative flex flex-col">
+    <div className="bg-gray-100 relative flex flex-col">
       <Navbar />
       <HeroSection />
+      <FeaturesSection />
     </div>
   );
 }
