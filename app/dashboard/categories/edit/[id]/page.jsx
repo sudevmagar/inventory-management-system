@@ -1,15 +1,41 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-export default function CategoryForm() {
-  const router =useRouter();
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+
+export default function EditForm() {
+  const params = useParams();
+  const router = useRouter();
+  const categoryId = params.id;
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
   });
-  
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch category data on component mount
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const response = await fetch(`/api/categories/${categoryId}`);
+        const data = await response.json();
+        console.log(data);
+        setFormData({
+          title: data.title,
+          description: data.description,
+        });
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching category data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategoryData();
+  }, [categoryId]);
+
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,40 +44,46 @@ export default function CategoryForm() {
       [name]: value,
     }));
   };
+
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`/api/categories`, {
-        method: "POST",
+      const response = await fetch(`/api/categories/${categoryId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to create category");
+      if (!response.ok) throw new Error("Failed to update category");
 
-      setFormData({
-        title: "",
-        description: ""
-      })
       // Redirect back to categories page after successful update
       router.push("/dashboard/categories");
     } catch (error) {
-      console.error("Error creating category:", error);
+      console.error("Error updating category:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <p className="text-center">Loading categories data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <div className="">
-        <h1 className="text-2xl font-bold mb-6 text-center">Add New Product</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Edit Category</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="product" className="block mb-2 text-sm font-medium">
+          <label htmlFor="title" className="block mb-2 text-sm font-medium">
             Title
           </label>
           <input
@@ -86,7 +118,7 @@ export default function CategoryForm() {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
           >
-            Add Category
+            Update Category
           </button>
           <Link
             href="/dashboard/categories"

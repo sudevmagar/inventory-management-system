@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function CreateForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    product: "",
+    title: "",
     quantity: "",
     price: "",
     category: "",
@@ -28,18 +30,33 @@ export default function CreateForm() {
       [name]: value,
     }));
   };
+
   // Form submission handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("FormData:", formData);
+    try {
+      const response = await fetch(`/api/products`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    console.log("Form submitted:", formData);
+      if (!response.ok) throw new Error("Failed to create product");
 
-    setFormData({
-      title: "",
-      quantity: "",
-      price: "",
-      category: "",
-    });
+      setFormData({
+        title: "",
+        quantity: "",
+        price: "",
+        category: "",
+      });
+      // Redirect back to inventory page after successful update
+      router.push("/dashboard/inventory");
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -54,8 +71,8 @@ export default function CreateForm() {
           </label>
           <input
             type="text"
-            id="product"
-            name="product"
+            id="title"
+            name="title"
             value={formData.title}
             onChange={handleChange}
             placeholder="Enter product name"
@@ -111,7 +128,9 @@ export default function CreateForm() {
             required
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
           >
-            <option key="default" value="">Select a category</option>
+            <option key="default" value="">
+              Select a category
+            </option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.title}

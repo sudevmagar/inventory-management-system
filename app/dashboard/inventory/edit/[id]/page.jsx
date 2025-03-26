@@ -22,10 +22,15 @@ export default function EditForm() {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response= await fetch(`/api/products/${productId}`)
-        const data =await response.json();
-        console.log(data)
-        // setFormData(data.product);
+        const response = await fetch(`/api/products/${productId}`);
+        const data = await response.json();
+        console.log(data);
+        setFormData({
+          title: data.title,
+          quantity: data.quantity,
+          price: data.price,
+          category:data.category.title
+        });
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching product data:", error);
@@ -35,7 +40,7 @@ export default function EditForm() {
 
     // Fetch categories (replace with your actual API call)
     const fetchCategories = async () => {
-      const response = await fetch('/api/categories');
+      const response = await fetch("/api/categories");
       const data = await response.json();
       setCategories(data);
     };
@@ -43,6 +48,7 @@ export default function EditForm() {
     fetchProductData();
     fetchCategories();
   }, [productId]);
+  console.log(categories)
 
   // Handle input changes
   const handleChange = (e) => {
@@ -58,17 +64,16 @@ export default function EditForm() {
     e.preventDefault();
 
     try {
- 
       const response = await fetch(`/api/products/${productId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      
-      if (!response.ok) throw new Error('Failed to update product');
-      
+
+      if (!response.ok) throw new Error("Failed to update product");
+
       // Redirect back to inventory page after successful update
       router.push("/dashboard/inventory");
     } catch (error) {
@@ -97,8 +102,8 @@ export default function EditForm() {
           </label>
           <input
             type="text"
-            id="product"
-            name="product"
+            id="title"
+            name="title"
             value={formData.title}
             onChange={handleChange}
             placeholder="Enter product name"
@@ -156,8 +161,8 @@ export default function EditForm() {
           >
             <option value="">Select a category</option>
             {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
+              <option key={category.id} value={category.title}>
+                {category.title}
               </option>
             ))}
           </select>
