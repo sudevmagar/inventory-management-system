@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, Tag } from "lucide-react";
+import { Home, Package, Notebook } from "lucide-react";
 
 export default function DesktopSidebar() {
   const pathname = usePathname();
@@ -36,7 +36,7 @@ export default function DesktopSidebar() {
               pathname === "/dashboard/categories" ? "text-blue-600" : ""
             }`}
           >
-            <Tag className="w-5 h-5 mr-5" />
+            <Notebook className="w-5 h-5 mr-5" />
             <p className="font-medium">Categories</p>
           </Link>
         </div>
