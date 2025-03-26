@@ -7,6 +7,7 @@ export async function GET() {
     const products = await prisma.product.findMany({
       orderBy: { updated: "desc" }, 
     });
+    console.log(products)
     return new Response(JSON.stringify(products), {
       status: 200,
       headers: { "Content-Type": "application/json" },

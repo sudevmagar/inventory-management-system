@@ -1,19 +1,38 @@
 "use client";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 export default function ProductsList() {
-  const products = [
-    { name: "Laptop", quantity: 10, price: 999.99, category: "Electronics" },
-    { name: "Headphones", quantity: 25, price: 199.5, category: "Electronics" },
-    { name: "Desk Chair", quantity: 5, price: 249.99, category: "Furniture" },
-  ];
+  const [products, setProducts] = useState();
+  const [loading,setLoading]= useState(false);
 
+  const fetchProducts = useCallback(async () => {
+    setLoading(true)
+    try {
+      const response = await fetch("/api/products");
+      const data = await response.json();
+      console.log(data);
 
-  const handleDelete= (productId)=>{
+      if (response.ok) {
+        setProducts(data);
+      } else {
+        console.error("Failed to fetch leave requests:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching leave requests:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [setProducts]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleDelete = (productId) => {
     alert("delete clicked");
-  }
+  };
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded shadow-xl">
@@ -43,12 +62,12 @@ export default function ProductsList() {
 
           {/* Table Body */}
           <tbody>
-            {products.map((product, index) => (
+            {products?.map((product, index) => (
               <tr
                 key={index}
                 className="border-b hover:bg-gray-100 transition-colors"
               >
-                <td className="p-3">{product.name}</td>
+                <td className="p-3">{product.title}</td>
                 <td className="p-3">{product.quantity}</td>
                 <td className="p-3">${product.price.toFixed(2)}</td>
                 <td className="p-3">{product.category}</td>

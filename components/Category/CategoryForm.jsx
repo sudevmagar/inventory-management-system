@@ -1,14 +1,13 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function CategoryForm() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
   });
-  const [categories, setCategories] = useState(["No Category"]);
-
+  
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
