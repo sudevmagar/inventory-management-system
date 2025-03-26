@@ -1,42 +1,52 @@
 import { Package, Banknote, Warehouse, NotebookIcon } from "lucide-react";
 
-const Storage = {
-  getProducts: () => [
-    { id: 1, quantity: 500, price: 1000 },
-    { id: 2, quantity: 368, price: 434 },
-  ],
-  getCategories: () => [
-    { id: 1, name: "Category 1" },
-    { id: 2, name: "Category 2" },
-  ],
-};
+async function getProducts() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch products");
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return []; 
+  }
+}
 
-export default function DashboardPage() {
-  const calculateProducts = () => {
-    const allProducts = Storage.getProducts();
-    return allProducts.length.toLocaleString();
-  };
+async function getCategories() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch categories");
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return []; 
+  }
+}
 
-  const calculateQuantity = () => {
-    const allProducts = Storage.getProducts();
-    return allProducts
+export default async function DashboardPage() {
+  const products = await getProducts();
+  const categories = await getCategories();
+
+  // Calculate Number of Products
+  const calculateProducts = () => products.length.toLocaleString();
+
+  // Calculate Total Quantity
+  const calculateQuantity = () =>
+    products
       .reduce((acc, product) => acc + product.quantity, 0)
       .toLocaleString();
-  };
 
-  const calculatePrice = () => {
-    const allProducts = Storage.getProducts();
-    const totalPrice = allProducts.reduce(
-      (acc, product) => acc + product.price,
-      0
-    );
-    return totalPrice.toLocaleString();
-  };
+  // Calculate Total Price
+  const calculatePrice = () =>
+    products
+      .reduce((acc, product) => acc + product.price, 0)
+      .toLocaleString();
 
-  const totalCategories = () => {
-    const allCategories = Storage.getCategories();
-    return allCategories.length.toLocaleString();
-  };
+  // Calculate Total Categories
+  const totalCategories = () => categories.length.toLocaleString();
 
   return (
     <div className="bg-white p-8 rounded-lg">
