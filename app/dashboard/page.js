@@ -1,49 +1,33 @@
+"use client";
 import { Package, Banknote, Warehouse, NotebookIcon } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-async function getProducts() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
-      {
-        cache: "no-store",
+export default function DashboardPage() {
+  const [stats, setStats] = useState();
+  const [Loading, setLoading] = useState(false);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/stats");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch dashboard statistics");
       }
-    );
-    if (!res.ok) throw new Error("Failed to fetch products");
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
 
-async function getCategories() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`,
-      {
-        cache: "no-store",
-      }
-    );
-    if (!res.ok) throw new Error("Failed to fetch categories");
-    return res.json();
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
+      const data = await response.json();
+      setStats(data);
+    } catch (error) {
+      console.error("Error fetching dashboard stats:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [setStats]);
 
-export default async function DashboardPage() {
-  const products = await getProducts();
-  const categories = await getCategories();
-
-  const calculateProducts = () => products.length.toLocaleString();
-  const calculateQuantity = () =>
-    products
-      .reduce((acc, product) => acc + product.quantity, 0)
-      .toLocaleString();
-  const calculatePrice = () =>
-    products.reduce((acc, product) => acc + product.price, 0).toLocaleString();
-  const totalCategories = () => categories.length.toLocaleString();
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   return (
     <div className="bg-white p-8 rounded-lg">
@@ -53,22 +37,30 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 gap-16 mt-11 w-full sm:grid-cols-2 lg:grid-cols-4 lg:overflow-auto">
         <div className="flex flex-col items-center justify-center mr-5">
           <Package className="w-9 h-9 text-gray-600" />
-          <p className="mt-4 text-2xl font-medium">{calculateProducts()}</p>
+          <p className="mt-4 text-2xl font-medium">
+            {stats?.totalProducts || "0"}
+          </p>
           <p className="text-center w-40">Number of Products</p>
         </div>
         <div className="flex flex-col items-center justify-center mr-5">
           <Warehouse className="w-9 h-9 text-gray-600" />
-          <p className="mt-4 text-2xl font-medium">{calculateQuantity()}</p>
+          <p className="mt-4 text-2xl font-medium">
+            {stats?.totalQuantity || "0"}
+          </p>
           <p className="text-center w-40">Total Quantity</p>
         </div>
         <div className="flex flex-col items-center justify-center mr-5">
           <Banknote className="w-9 h-9 text-gray-600" />
-          <p className="mt-4 text-2xl font-medium">${calculatePrice()}</p>
+          <p className="mt-4 text-2xl font-medium">
+            ${Math.round(stats?.totalPrice )|| "0"}
+          </p>
           <p className="text-center w-40">Total Value in Hand</p>
         </div>
         <div className="flex flex-col items-center justify-center mr-5">
           <NotebookIcon className="w-9 h-9 text-gray-600" />
-          <p className="mt-4 text-2xl font-medium">{totalCategories()}</p>
+          <p className="mt-4 text-2xl font-medium">
+            {stats?.totalCategories || "0"}
+          </p>
           <p className="text-center w-40">Total Categories</p>
         </div>
       </div>
