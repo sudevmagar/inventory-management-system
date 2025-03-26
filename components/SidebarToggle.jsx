@@ -1,3 +1,4 @@
+// components/SidebarToggle.jsx
 "use client";
 import { useState } from "react";
 import { Home, Package, Tag, Menu } from "lucide-react";
@@ -9,7 +10,7 @@ export default function SidebarToggle() {
     <>
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-[250px] bg-white shadow-2xl z-10 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 w-[250px] bg-white shadow-2xl z-20 transform transition-transform duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:hidden`}
       >
@@ -23,7 +24,7 @@ export default function SidebarToggle() {
             </div>
             <div className="w-full flex items-center mb-8 cursor-pointer hover:text-blue-600">
               <Package className="w-5 h-5 mr-5" />
-              <p className="font-medium">Inventory</p>
+              <p className="font-medium"> BCS Inventory</p>
             </div>
             <div className="w-full flex items-center mb-8 cursor-pointer hover:text-blue-600">
               <Tag className="w-5 h-5 mr-5" />
@@ -33,10 +34,11 @@ export default function SidebarToggle() {
         </div>
       </div>
 
-      {/* Sidebar Backdrop */}
+      {/* Sidebar Backdrop with RGBA */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-15 z-5 lg:hidden"
+          className="fixed inset-0 z-10 lg:hidden"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }} // 15% opacity black
           onClick={() => setSidebarOpen(false)}
         />
       )}

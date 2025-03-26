@@ -1,5 +1,5 @@
-import SidebarToggle from '../../components/SidebarToggle';
-import { Home, Package, Tag, Search } from 'lucide-react';
+import SidebarToggle from "../../components/SidebarToggle";
+import { Home, Package, Tag, Search } from "lucide-react";
 
 export default function DashboardLayout({ children }) {
   return (
