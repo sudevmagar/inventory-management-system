@@ -52,7 +52,7 @@ export default function DashboardPage() {
         <div className="flex flex-col items-center justify-center mr-5">
           <Banknote className="w-9 h-9 text-gray-600" />
           <p className="mt-4 text-2xl font-medium">
-            ${Math.round(stats?.totalPrice )|| "0"}
+            ${Math.round(stats?.totalPrice*100)/100|| "0"}
           </p>
           <p className="text-center w-40">Total Value in Hand</p>
         </div>
