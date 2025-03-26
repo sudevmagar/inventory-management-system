@@ -8,17 +8,19 @@ datasource db {
 }
 
 model Product {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  category  String
-  quantity  Int
-  price     Float
-  updated   DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  categoryId String   @db.ObjectId 
+  category   Category @relation(fields: [categoryId], references: [id]) 
+  quantity   Int
+  price      Float
+  updated    DateTime @updatedAt
 }
 
 model Category {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String   @unique
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String    @unique
   description String?
-  updated     DateTime @updatedAt
+  updated     DateTime  @updatedAt
+  products    Product[] // Optional: inverse relation for easier querying
 }
