@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function CreateForm() {
@@ -23,7 +24,7 @@ export default function CreateForm() {
     e.preventDefault();
 
     console.log("Form submitted:", formData);
- 
+
     setFormData({
       product: "",
       quantity: "",
@@ -110,12 +111,20 @@ export default function CreateForm() {
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
-        >
-          Add Product
-        </button>
+        <div className="flex gap-2 flex-col sm:flex-row text-center">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            Add Product
+          </button>
+          <Link
+            href="/dashboard/inventory"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            Cancel
+          </Link>
+        </div>
       </form>
     </div>
   );

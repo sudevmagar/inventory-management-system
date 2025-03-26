@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SidebarToggle from "../../components/SidebarToggle";
 import { Home, Package, Tag, Search } from "lucide-react";
 
@@ -16,7 +17,7 @@ export default function DashboardLayout({ children }) {
             </div>
             <div className="w-full flex items-center mb-8 cursor-pointer hover:text-blue-600">
               <Package className="w-5 h-5 mr-5" />
-              <p className="font-medium">Inventory</p>
+              <Link href={'/dashboard/inventory'} className="font-medium">Inventory</Link>
             </div>
             <div className="w-full flex items-center mb-8 cursor-pointer hover:text-blue-600">
               <Tag className="w-5 h-5 mr-5" />
