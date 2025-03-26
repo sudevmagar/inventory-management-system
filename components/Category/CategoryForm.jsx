@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function CategoryForm() {
@@ -65,12 +66,20 @@ export default function CategoryForm() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
-        >
-          Add Category
-        </button>
+        <div className="flex gap-2 flex-col sm:flex-row text-center">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            Add Category
+          </button>
+          <Link
+            href="/dashboard/categories"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            Cancel
+          </Link>
+        </div>
       </form>
     </div>
   );
