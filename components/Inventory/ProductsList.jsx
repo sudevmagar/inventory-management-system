@@ -8,7 +8,7 @@ export default function ProductsList() {
       <div className="">
         <h1>Products</h1>
         <div>
-          <Link href={"/inventory/create"}>Add Product</Link>
+          <Link href={"/dashboard/inventory/create"}>Add Product</Link>
         </div>
       </div>
     </div>
