@@ -22,5 +22,5 @@ model Category {
   title       String    @unique
   description String?
   updated     DateTime  @updatedAt
-  products    Product[] // Optional: inverse relation for easier querying
+  products    Product[] 
 }
