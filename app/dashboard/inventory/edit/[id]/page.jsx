@@ -29,7 +29,7 @@ export default function EditForm() {
           title: data.title,
           quantity: data.quantity,
           price: data.price,
-          category:data.category.title
+          category: data.category.title,
         });
         setIsLoading(false);
       } catch (error) {
@@ -48,7 +48,7 @@ export default function EditForm() {
     fetchProductData();
     fetchCategories();
   }, [productId]);
-  console.log(categories)
+  console.log(categories);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -81,108 +81,134 @@ export default function EditForm() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-        <p className="text-center">Loading product data...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <div className="">
-        <h1 className="text-2xl font-bold mb-6 text-center">Edit Product</h1>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="product" className="block mb-2 text-sm font-medium">
-            Product Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter product name"
-            required
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+    <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+      {isLoading ? (
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+          <p className="text-center">Loading product data...</p>
         </div>
+      ) : (
+        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 m-4">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">Edit Product</h1>
+            <button
+              onClick={() => router.push("/dashboard/inventory")}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
 
-        <div>
-          <label htmlFor="quantity" className="block mb-2 text-sm font-medium">
-            Quantity
-          </label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-            placeholder="Enter quantity"
-            min="0"
-            required
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="title" className="block mb-2 text-sm font-medium">
+                Product Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Enter product name"
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="price" className="block mb-2 text-sm font-medium">
-            Price
-          </label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="Enter price"
-            min="0"
-            step="0.01"
-            required
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+            <div>
+              <label
+                htmlFor="quantity"
+                className="block mb-2 text-sm font-medium"
+              >
+                Quantity
+              </label>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleChange}
+                placeholder="Enter quantity"
+                min="0"
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="category" className="block mb-2 text-sm font-medium">
-            Category
-          </label>
-          <select
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select a category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.title}>
-                {category.title}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div>
+              <label htmlFor="price" className="block mb-2 text-sm font-medium">
+                Price
+              </label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                placeholder="Enter price"
+                min="0"
+                step="0.01"
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-        <div className="flex gap-2 flex-col sm:flex-row text-center">
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Update Product
-          </button>
-          <Link
-            href="/dashboard/inventory"
-            className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition-colors"
-          >
-            Cancel
-          </Link>
+            <div>
+              <label
+                htmlFor="category"
+                className="block mb-2 text-sm font-medium"
+              >
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.title}>
+                    {category.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex gap-2 pt-4">
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Update Product
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/inventory")}
+                className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      )}
     </div>
   );
 }
